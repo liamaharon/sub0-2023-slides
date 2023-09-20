@@ -157,7 +157,7 @@ try-runtime \
     live --uri wss://polkadot-asset-hub-rpc.polkadot.io:443
 ```
 
-<p>Finish with example overweight migration</p>
+<p class="fragment">Finish with example overweight migration</p>
 
 ---
 
