@@ -6,7 +6,7 @@ Rust Developer - FRAME - Parity Technologies
 
 <br />
 
-[https://sub0-2023-liam-slides.netlify.app/](https://sub0-2023-liam-slides.netlify.app/)
+[sub0-2023-liam-slides.netlify.app](https://sub0-2023-liam-slides.netlify.app/)
 
 ---
 
