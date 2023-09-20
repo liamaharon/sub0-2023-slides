@@ -63,16 +63,16 @@ cargo install \
 <ul>
   <li class="fragment">Reading a new FRAME example pallet (~10 min)</li>
   <li class="fragment">Reading a migration module for the pallet (~10 min)</li>
-  <li class="fragment">Adding the migration to Asset Hub (~10 min)</li>
-  <li class="fragment">Dry-run upgrade with try-runtime-cli (~15 min)</li>
-  <li class="fragment">What's next for migration tooling</li>
+  <li class="fragment">Adding the migration to Asset Hub (~5 min)</li>
+  <li class="fragment">Dry-run upgrade with try-runtime-cli (~10 min)</li>
+  <li class="fragment">Final thoughts</li>
 </ul>
 
 <p class="fragment">Please ask questions!</p>
 
 ---
 
-### New FRAME example pallet
+### FRAME example pallet and migration
 
 <small>(~15 minutes)</small>
 
@@ -85,50 +85,93 @@ cargo doc \
 
 ---
 
-### Add it to Asset Hub
+### Add example pallet and migration to Asset Hub
 
-<small>(~10 minutes)</small>
+<small>(~5 minutes)</small>
 
-<ol class="fragment">
-  <li>Add `pallet-example-storage-migrations` to the Cargo.toml</li>
-  <li>Add the example pallet to the runtime</li>
-  <li>Implement the example pallet config for our runtime</li>
-  <li>Add the versioned migration to the migrations tuple</li>
-</ol>
+```toml
+# 1. Add dependency and update feature propagation
+pallet-example-storage-migrations = { path = "../../../../../substrate/frame/examples/storage-migrations", default-features = false }
+```
+
+```rust
+// 2. Add pallet to runtime and implement config
+construct_runtime!(
+  pub enum Runtime
+  {
+    // other pallets...
+    ExamplePallet: pallet_example_storage_migrations::{Pallet, Call, Storage} = 123,
+  }
+)
+// 3. Implement config
+impl pallet_example_storage_migrations::Config for Runtime {}
+// 4. Add migrations to Migraitons tuple
+pub type Migrations =
+  (
+    // other migrations...
+    pallet_example_storage_migrations::migrations::v1::versioned::MigrateV0ToV1<Runtime>
+  );
+```
 
 ---
 
-### Test it with try-runtime-cli
-
-<small>(~15 minutes)</small>
+### Why can't we just deploy now?
 
 <ul>
-  <li class="fragment">Why we need further testing</li>
-  <ul>
-    <li class="fragment">Dry-run our runtime upgrade using real storage</li>
-    <ul>
-      <li class="fragment">PoV size</li>
-      <li class="fragment">Execution time</li>
-      <li class="fragment">Reality stings</li>
-    </ul>
+  <li class="fragment">Dry-run our runtime upgrade using real storage</li>
+  <ul class="fragment">
+    <li>Estimate PoV size</li>
+    <li>Estimate Execution Time</li>
+    <li>Sometimes, Reality Bites</li>
   </ul>
-  <li class="fragment">Get Started: <a href="https://github.com/paritytech/try-runtime-cli">https://github.com/paritytech/try-runtime-cli</a></li>
-  <li class="fragment">Example of overweight migration</li>
-  <li class="fragment">Safety tips</li>
 </ul>
 
 ---
 
-### Things to be aware of
+### Introducing try-runtime-cli
+
+<small>
+Project URL: <a href="https://github.com/paritytech/try-runtime-cli">https://github.com/paritytech/try-runtime-cli</a>
+</small>
+
+---
+
+### Dry-running with try-runtime-cli
+
+<small>
+(~10 minutes)
+</small>
+
+Build Asset Hub Runtime
+
+```bash
+cargo b -r -p asset-hub-polkadot-runtime --features try-runtime
+```
+
+Dry-run a Runtime Upgrade
+
+```bash
+try-runtime \
+    --runtime ./target/release/wbuild/asset-hub-polkadot-runtime/asset_hub_polkadot_runtime.wasm \
+    on-runtime-upgrade \
+    live --uri wss://polkadot-asset-hub-rpc.polkadot.io:443
+```
+
+<p>Finish with example overweight migration</p>
+
+---
+
+### Final thoughts
 
 <ul>
-  <li class="fragment">Multi-block migrations: <a href="https://github.com/paritytech/polkadot-sdk/issues/198">https://github.com/paritytech/polkadot-sdk/issues/198</li>
-  <li class="fragment">Chopsticks: <a href="https://github.com/AcalaNetwork/chopsticks">https://github.com/AcalaNetwork/chopsticks</li>
-  <li class="fragment">Parachain recovery discussion: <a href="https://forum.polkadot.network/t/how-to-recover-a-parachain/673/25">https://forum.polkadot.network/t/how-to-recover-a-parachain/673/25</li>
+  <li class="fragment">Safety tips</li>
+  <li class="fragment">Multi-block migrations: <a href="https://github.com/paritytech/polkadot-sdk/issues/198">https://github.com/paritytech/polkadot-sdk/issues/198</a></li>
+  <li class="fragment">Chopsticks: <a href="https://github.com/AcalaNetwork/chopsticks">https://github.com/AcalaNetwork/chopsticks</a></li>
+  <li class="fragment">Parachain recovery discussion: <a href="https://forum.polkadot.network/t/how-to-recover-a-parachain/673/25">https://forum.polkadot.network/t/how-to-recover-a-parachain/673/25</a></li>
 </ul>
 
 ---
 
-### Thank you!
+### That's all folks
 
-Question time
+Questions?
