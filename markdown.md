@@ -6,7 +6,7 @@ Rust Developer - FRAME - Parity Technologies
 
 <br />
 
-[https://github.com/liamaharon/sub0-2023-migrations-workshop-slides](https://github.com/liamaharon/sub0-2023-workshop-slides)
+[https://sub0-2023-liam-slides.netlify.app/](https://sub0-2023-liam-slides.netlify.app/)
 
 ---
 
