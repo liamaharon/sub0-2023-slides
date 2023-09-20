@@ -74,8 +74,6 @@ cargo install \
 
 ### FRAME example pallet and migration
 
-<small>(~15 minutes)</small>
-
 ```bash
 cargo doc \
     --package pallet-example-storage-migrations \
@@ -86,8 +84,6 @@ cargo doc \
 ---
 
 ### Add example pallet and migration to Asset Hub
-
-<small>(~5 minutes)</small>
 
 ```toml
 # 1. Add dependency and update feature propagation
@@ -138,10 +134,6 @@ Project URL: <a href="https://github.com/paritytech/try-runtime-cli">https://git
 
 ### Dry-running with try-runtime-cli
 
-<small>
-(~10 minutes)
-</small>
-
 Build Asset Hub Runtime
 
 ```bash
@@ -157,7 +149,7 @@ try-runtime \
     live --uri wss://polkadot-asset-hub-rpc.polkadot.io:443
 ```
 
-<p class="fragment">Finish with example overweight migration</p>
+<p class="fragment">Finish with examples of overweight and failed migrations</p>
 
 ---
 
